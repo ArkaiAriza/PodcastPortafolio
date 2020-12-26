@@ -1,0 +1,14 @@
+import { LISTENNOTES_DEV_KEY } from './devKeys';
+
+let LISTENNOTES_KEY = '';
+
+if (process.env.NODE_ENV === 'production') {
+  LISTENNOTES_KEY = process.env.REACT_APP_NEXT_PUBLIC_LISTENNOTES_KEY;
+} else {
+  LISTENNOTES_DEV_KEY
+    ? (LISTENNOTES_KEY = LISTENNOTES_DEV_KEY)
+    : (LISTENNOTES_KEY =
+        process.env.REACT_APP_NEXT_PUBLIC_LISTENNOTES_DEV_VERCEL_KEY);
+}
+
+export default LISTENNOTES_KEY;
