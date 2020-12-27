@@ -1,52 +1,82 @@
 import React, { useContext } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import { Grid, Typography } from '@material-ui/core';
+import { Grid, Typography, CircularProgress } from '@material-ui/core';
 
+import history from '../history';
 import PodcastContext from '../contexts/PodcastContext';
 import SearchBar from './SearchBar';
 import ItemsGrid from './ItemsGrid';
 
 const useStyles = makeStyles((theme) => ({
   container: {
-    backgroundColor: theme.palette.primary.light,
+    backgroundColor: theme.palette.primary.dark,
     flexGrow: 1,
+    minHeight: '100vh',
   },
-  list: {
-    width: '100%',
+  searchbarContainer: {
+    padding: '0.5rem 1rem',
+    [theme.breakpoints.up('sm')]: {
+      padding: '0.5rem 4rem',
+    },
+  },
+  topOptionContainer: {
+    color: theme.palette.primary.contrastText,
+    padding: '0.5rem 1rem',
+    [theme.breakpoints.up('sm')]: {
+      display: 'flex',
+      padding: '0.5rem 4rem',
+    },
+  },
+  topOptionImgContainer: {
+    textAlign: 'center',
+  },
+  topOptionImg: {
     maxWidth: '80%',
-    margin: 'auto',
-    backgroundColor: theme.palette.primary.light,
-    color: theme.palette.secondary.contrastText,
+    [theme.breakpoints.up('sm')]: {
+      maxWidth: '16vw',
+    },
   },
 }));
 
 const SearchResults = () => {
   const classes = useStyles();
-  const { results } = useContext(PodcastContext);
+  const { results, setSelectedPodcast } = useContext(PodcastContext);
 
   return (
     <div className={classes.container}>
       {results.podcastList.slice(0, 1)[0] !== undefined ? (
-        <Grid container>
-          <Grid item xs={12}>
+        <Grid>
+          <Grid item xs={12} className={classes.searchbarContainer}>
             <SearchBar />
           </Grid>
-          <Grid item xs={3}>
-            <img src={results.podcastList.slice(0, 1)[0].image} />
-          </Grid>
-          <Grid item xs={9}>
-            <Typography variant="h2">
-              {results.podcastList.slice(0, 1)[0].title_original}
-            </Typography>
-            <Typography variant="body1" component={'span'}>
-              <div
-                dangerouslySetInnerHTML={{
-                  __html: results.podcastList.slice(0, 1)[0]
-                    .description_original,
+          <div className={classes.topOptionContainer}>
+            <Grid item xs={12} sm={3} className={classes.topOptionImgContainer}>
+              <img
+                src={results.podcastList.slice(0, 1)[0].image}
+                className={classes.topOptionImg}
+                onClick={() => {
+                  setSelectedPodcast(results.podcastList.slice(0, 1)[0]);
+                  history.push(
+                    `/podcast/${results.podcastList.slice(0, 1)[0].id}`
+                  );
                 }}
               />
-            </Typography>
-          </Grid>
+            </Grid>
+            <Grid item xs={12} sm={9}>
+              <Typography variant="h2">
+                {results.podcastList.slice(0, 1)[0].title_original}
+              </Typography>
+              <Typography variant="body1" component={'span'}>
+                <div
+                  dangerouslySetInnerHTML={{
+                    __html: results.podcastList.slice(0, 1)[0]
+                      .description_original,
+                  }}
+                />
+              </Typography>
+            </Grid>
+          </div>
+
           <Grid item xs={12}>
             <ItemsGrid
               infoList={{
@@ -57,7 +87,17 @@ const SearchResults = () => {
             />
           </Grid>
         </Grid>
-      ) : null}
+      ) : (
+        <CircularProgress
+          style={{
+            position: 'fixed',
+            top: '45%',
+            right: '45%',
+            color: '#c7c7c7',
+          }}
+          size="8vw"
+        />
+      )}
     </div>
   );
 };

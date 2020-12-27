@@ -1,6 +1,6 @@
 import React, { useContext, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import { OutlinedInput, InputAdornment } from '@material-ui/core';
+import { OutlinedInput, InputAdornment, fade } from '@material-ui/core';
 import { Search as SearchIcon } from '@material-ui/icons';
 
 import PodcastContext from '../contexts/PodcastContext';
@@ -8,8 +8,17 @@ import history from '../history';
 
 const useStyles = makeStyles((theme) => ({
   searchBar: {
-    color: theme.palette.primary.contrastText,
+    position: 'relative',
+    width: '80%',
+    maxHeight: '4vh',
     margin: 10,
+    backgroundColor: fade(theme.palette.primary.light, 0.15),
+    '&:hover': {
+      backgroundColor: fade(theme.palette.primary.light, 0.3),
+    },
+    [theme.breakpoints.up('sm')]: {
+      width: '25%',
+    },
   },
 }));
 

@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import { Container, Typography } from '@material-ui/core';
+import { Typography } from '@material-ui/core';
 
 import Card from './Card';
 
@@ -17,6 +17,28 @@ const useStyles = makeStyles((theme) => ({
     flexWrap: 'wrap',
     justifyContent: 'center',
   },
+  episodeCard: {
+    display: 'flex',
+    textAlign: 'center',
+    justifyContent: 'space-between',
+    margin: '1vh 20vw',
+    fontFamily: 'Arial',
+    '&:hover': {
+      backgroundColor: theme.palette.primary.main,
+    },
+  },
+  episodeCardSearch: {
+    display: 'flex',
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'center',
+  },
+  searchTitle: {
+    margin: '1vh 5vw',
+    fontFamily: 'Arial',
+    fontSize: 30,
+    color: theme.palette.primary.contrastText,
+  },
 }));
 
 const ItemsGrid = ({ infoList, search }) => {
@@ -24,27 +46,35 @@ const ItemsGrid = ({ infoList, search }) => {
 
   const renderPodcastCards = () => {
     return infoList.podcastList.map((podcast) => {
-      return <Card key={podcast.id} podcast={podcast} search={search} />;
+      return (
+        <div
+          key={podcast.id}
+          className={!search ? null : classes.episodeCardSearch}
+        >
+          <Card podcast={podcast} search={search} />
+        </div>
+      );
     });
   };
 
   const renderEpisodesCards = () => {
     return infoList.episodesList.map((episode) => {
       return (
-        <React.Fragment key={episode.id}>
+        <div
+          key={episode.id}
+          className={!search ? classes.episodeCard : classes.episodeCardSearch}
+        >
           <Card episode={episode} search={search} />
           {!search ? (
-            <Typography variant="body2" color="textSecondary" component="p">
-              {episode.title}
-            </Typography>
+            <Typography variant="body1">{episode.title}</Typography>
           ) : null}
-        </React.Fragment>
+        </div>
       );
     });
   };
 
   return (
-    <Container>
+    <div>
       {infoList.podcastList && !search ? (
         <div className={classes.gridPodcast}>{renderPodcastCards()}</div>
       ) : null}
@@ -53,13 +83,13 @@ const ItemsGrid = ({ infoList, search }) => {
       ) : null}
       {search ? (
         <React.Fragment>
-          <h2>Podcast</h2>
+          <div className={classes.searchTitle}>Podcast</div>
           <div className={classes.gridPodcast}>{renderPodcastCards()}</div>
-          <h2>Episodes</h2>
+          <div className={classes.searchTitle}>Episodes</div>
           <div className={classes.gridPodcast}>{renderEpisodesCards()}</div>
         </React.Fragment>
       ) : null}
-    </Container>
+    </div>
   );
 };
 

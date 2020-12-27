@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import { Chip, Grid } from '@material-ui/core';
+import { Chip, Grid, CircularProgress } from '@material-ui/core';
 
 import PodcastContext from '../contexts/PodcastContext';
 import SearchBar from './SearchBar';
@@ -1032,16 +1032,59 @@ const podcastList = [
 
 const useStyles = makeStyles((theme) => ({
   container: {
-    backgroundColor: theme.palette.primary.light,
+    backgroundColor: theme.palette.primary.dark,
     flexGrow: 1,
-    height: '100%',
+    color: theme.palette.primary.contrastText,
+    minHeight: '100vh',
   },
-  list: {
-    width: '100%',
-    maxWidth: '80%',
-    margin: 'auto',
-    backgroundColor: theme.palette.primary.light,
-    color: theme.palette.secondary.contrastText,
+  searchbarContainer: {
+    padding: '0.5rem 1rem',
+    [theme.breakpoints.up('sm')]: {
+      padding: '0.5rem 4rem',
+    },
+  },
+  chipContainer: {
+    color: theme.palette.primary.contrastText,
+    padding: '1rem 1rem',
+    textAlign: 'center',
+    [theme.breakpoints.up('sm')]: {
+      padding: '2rem 8rem',
+    },
+    [theme.breakpoints.up('lg')]: {
+      padding: '2rem 16rem',
+    },
+  },
+  chip: {
+    maxHeight: '3vh',
+    backgroundColor: theme.palette.primary.main,
+    color: theme.palette.primary.contrastText,
+    fontFamily: 'Monaco',
+    fontSize: 15,
+    padding: 1,
+    margin: 5,
+    maxWidth: '40vw',
+    boxShadow: `1px 1px 1px 1px rgba(0, 0, 0, 0.5)`,
+    [theme.breakpoints.up('sm')]: {
+      fontSize: 18,
+      padding: 10,
+      margin: 7,
+      maxWidth: '25vw',
+    },
+    [theme.breakpoints.up('lg')]: {
+      fontSize: 24,
+      padding: 19,
+      margin: 10,
+      maxWidth: '15vw',
+    },
+  },
+  title: {
+    marginBottom: '2rem',
+    textAlign: 'center',
+    fontSize: 30,
+    fontFamily: 'Georgia',
+    [theme.breakpoints.up('sm')]: {
+      fontSize: 60,
+    },
   },
 }));
 
@@ -1075,10 +1118,10 @@ const LandingPage = () => {
     return genres.map((genre) => {
       return (
         <Chip
+          className={classes.chip}
           label={genre.name}
           key={genre.id}
           onClick={() => handleGenreOption(genre)}
-          size="big"
         />
       );
     });
@@ -1086,23 +1129,33 @@ const LandingPage = () => {
 
   return (
     <div className={classes.container}>
-      <Grid container>
-        <Grid item xs={12}>
+      <Grid>
+        <Grid item xs={12} className={classes.searchbarContainer}>
           <SearchBar />
         </Grid>
-        <Grid item xs={12}>
-          {genres ? renderGenres() : null}
+        <Grid item xs={12} className={classes.chipContainer}>
+          {genres ? (
+            renderGenres()
+          ) : (
+            <CircularProgress color="light" size="8vw" />
+          )}
         </Grid>
         <Grid item xs={12}>
-          {selectedGenre.name === undefined ? (
-            <h2>General</h2>
+          <div className={classes.title}>
+            {selectedGenre.name === undefined ? (
+              <div>General</div>
+            ) : (
+              <div>{selectedGenre.name}</div>
+            )}
+          </div>
+          {podcastList ? (
+            <ItemsGrid
+              infoList={{ podcastList, episodesList: [] }}
+              search={false}
+            />
           ) : (
-            <h2>{selectedGenre.name}</h2>
+            <CircularProgress color="light" size="8vw" />
           )}
-          <ItemsGrid
-            infoList={{ podcastList, episodesList: [] }}
-            search={false}
-          />
         </Grid>
       </Grid>
     </div>

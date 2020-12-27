@@ -13,10 +13,26 @@ import PodcastContext from '../contexts/PodcastContext';
 
 const useStyles = makeStyles((theme) => ({
   card: {
-    color: theme.palette.primary.light,
-    maxWidth: '10%',
-    maxHeight: '12vh',
-    margin: 5,
+    maxWidth: '30vw',
+    maxHeight: '15vh',
+    margin: 10,
+    boxShadow: `1px 1px 1px 1px rgba(0, 0, 0, 0.5)`,
+    [theme.breakpoints.up('sm')]: {
+      maxWidth: '15vw',
+      maxHeight: '12vh',
+      margin: 5,
+    },
+  },
+  cardContent: {
+    height: '4vh',
+    padding: 1,
+    maxWidth: '45vw',
+    textAlign: 'center',
+    [theme.breakpoints.up('sm')]: {
+      height: '2vh',
+      padding: 1,
+      maxWidth: '20vw',
+    },
   },
 }));
 
@@ -44,7 +60,7 @@ const Card = ({ podcast, episode, search }) => {
           image={podcast ? podcast.image : episode.thumbnail}
         />
         {podcast || search ? (
-          <CardContent>
+          <CardContent className={classes.cardContent}>
             <Typography variant="body2" color="textSecondary" component="p">
               {podcast
                 ? !search
