@@ -10,19 +10,21 @@ import PodcastContext from '../contexts/PodcastContext';
 const useStyles = makeStyles((theme) => ({
   container: {
     backgroundColor: theme.palette.primary.main,
+    height: '100%',
     width: '100%',
   },
   playerContainer: {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'flex-start',
+    height: '100%',
   },
   player: {
     position: 'absolute',
     top: 0,
     bottom: 0,
     right: 0,
-    left: '200px',
+    left: '150px',
     display: 'flex',
     zIndex: 1,
     width: '100%',
@@ -80,7 +82,7 @@ const StyledDescription = styled(Grid)`
 
 const StyledContainer = styled.div`
   position: sticky;
-  bottom: 0;
+  bottom: -1px;
   overflow: hidden;
   height: 8vh;
   ${(props) =>
@@ -97,6 +99,7 @@ let rearrangedPlayer = [
     style: {
       display: 'flex',
       justifyContent: 'flex-start',
+      filter: 'invert(100%)',
     },
     innerComponents: [
       {
@@ -109,7 +112,7 @@ let rearrangedPlayer = [
       },
       {
         type: 'name',
-        style: { flex: '5 0 50%', minWidth: '100px' },
+        style: { flex: '5 0 70%', minWidth: '100px' },
       },
     ],
   },
@@ -122,13 +125,14 @@ let expandedRearrangedPlayer = [
       position: 'absolute',
       display: 'flex',
       justifyContent: 'flex-start',
-      left: '45%',
-      bottom: '10%',
+      left: '40%',
+      bottom: '20%',
+      filter: 'invert(100%)',
     },
     innerComponents: [
       {
         type: 'play',
-        style: { flex: '1', maxWidth: '100px' },
+        style: { flex: '1', maxWidth: '50px' },
       },
       {
         type: 'volume',
@@ -176,17 +180,13 @@ const PlayComponent = () => {
               <ExpandLess
                 style={{
                   fontSize: 50,
-                  color: 'black',
+                  color: 'white',
                 }}
                 onClick={handleExpansion}
               />
             </IconButton>
 
-            <img
-              src={selectedEpisode.thumbnail}
-              height='60vh'
-              style={{ padding: '10px 10px' }}
-            />
+            <img src={selectedEpisode.thumbnail} style={{ height: '80%' }} />
           </Grid>
         </div>
       ) : (
@@ -204,7 +204,7 @@ const PlayComponent = () => {
                 <ExpandMore
                   style={{
                     fontSize: 50,
-                    color: 'black',
+                    color: 'white',
                   }}
                   onClick={handleExpansion}
                 />
@@ -271,9 +271,9 @@ const PlayComponent = () => {
           audioFiles={playlist}
           rearrange={isExpanded ? expandedRearrangedPlayer : rearrangedPlayer}
           fontFamily='serif'
-          fontSize='2vw'
-          iconSize='3vw'
-          playerWidth='50vw'
+          fontSize='2rem'
+          iconSize='2rem'
+          playerWidth='70vw'
         />
       </div>
     </StyledContainer>
