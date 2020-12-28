@@ -36,6 +36,20 @@ const useStyles = makeStyles((theme) => ({
       maxWidth: '16vw',
     },
   },
+  topOptionTitle: {
+    fontSize: 30,
+    margin: 10,
+    [theme.breakpoints.up('sm')]: {
+      fontSize: 70,
+      margin: 0,
+    },
+  },
+  gridContainer: {
+    padding: '0.5rem 1rem',
+    [theme.breakpoints.up('sm')]: {
+      padding: '0.5rem 4rem',
+    },
+  },
 }));
 
 const SearchResults = () => {
@@ -63,7 +77,7 @@ const SearchResults = () => {
               />
             </Grid>
             <Grid item xs={12} sm={9}>
-              <Typography variant="h2">
+              <Typography variant="h2" className={classes.topOptionTitle}>
                 {results.podcastList.slice(0, 1)[0].title_original}
               </Typography>
               <Typography variant="body1" component={'span'}>
@@ -77,7 +91,7 @@ const SearchResults = () => {
             </Grid>
           </div>
 
-          <Grid item xs={12}>
+          <Grid item xs={12} className={classes.gridContainer}>
             <ItemsGrid
               infoList={{
                 podcastList: results.podcastList.slice(1),

@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import { Chip, Grid, CircularProgress } from '@material-ui/core';
+import { Chip, Grid, CircularProgress, Divider } from '@material-ui/core';
 
 import PodcastContext from '../contexts/PodcastContext';
 import SearchBar from './SearchBar';
@@ -1040,48 +1040,52 @@ const useStyles = makeStyles((theme) => ({
   searchbarContainer: {
     padding: '0.5rem 1rem',
     [theme.breakpoints.up('sm')]: {
-      padding: '0.5rem 4rem',
+      padding: '0.5rem 3rem',
     },
   },
   chipContainer: {
+    backgroundColor: theme.palette.primary.dark,
+    display: 'flex',
+    flexWrap: 'wrap',
     color: theme.palette.primary.contrastText,
     padding: '1rem 1rem',
-    textAlign: 'center',
+    justifyContent: 'center',
     [theme.breakpoints.up('sm')]: {
       padding: '2rem 8rem',
     },
     [theme.breakpoints.up('lg')]: {
-      padding: '2rem 16rem',
+      padding: '0rem 16rem',
+      margin: '3rem 0rem',
     },
   },
   chip: {
     maxHeight: '3vh',
-    backgroundColor: theme.palette.primary.main,
+    backgroundColor: '#202020',
     color: theme.palette.primary.contrastText,
-    fontFamily: 'Monaco',
+    borderRadius: 0,
+    fontFamily: 'Arial',
     fontSize: 15,
-    padding: 1,
-    margin: 5,
-    maxWidth: '40vw',
-    boxShadow: `1px 1px 1px 1px rgba(0, 0, 0, 0.5)`,
+    width: '75%',
+    '&:hover': {
+      backgroundColor: '#151515',
+    },
     [theme.breakpoints.up('sm')]: {
-      fontSize: 18,
+      fontSize: 15,
       padding: 10,
-      margin: 7,
-      maxWidth: '25vw',
+      maxWidth: '33%',
     },
     [theme.breakpoints.up('lg')]: {
-      fontSize: 24,
-      padding: 19,
-      margin: 10,
-      maxWidth: '15vw',
+      fontSize: 20,
+      padding: 10,
+      margin: 1,
+      maxWidth: '25%',
     },
   },
   title: {
-    marginBottom: '2rem',
-    textAlign: 'center',
+    margin: '3rem 2rem',
+    textAlign: 'start',
     fontSize: 30,
-    fontFamily: 'Georgia',
+    fontFamily: 'Arial',
     [theme.breakpoints.up('sm')]: {
       fontSize: 60,
     },
@@ -1133,6 +1137,7 @@ const LandingPage = () => {
         <Grid item xs={12} className={classes.searchbarContainer}>
           <SearchBar />
         </Grid>
+        {/* <Divider style={{ margin: '1vh 7vw' }} /> */}
         <Grid item xs={12} className={classes.chipContainer}>
           {genres ? (
             renderGenres()
@@ -1140,10 +1145,11 @@ const LandingPage = () => {
             <CircularProgress color="light" size="8vw" />
           )}
         </Grid>
+        {/* <Divider style={{ margin: '2vh 7vw' }} /> */}
         <Grid item xs={12}>
           <div className={classes.title}>
             {selectedGenre.name === undefined ? (
-              <div>General</div>
+              <div>Top List</div>
             ) : (
               <div>{selectedGenre.name}</div>
             )}

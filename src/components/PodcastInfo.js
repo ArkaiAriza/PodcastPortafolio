@@ -13,15 +13,30 @@ const useStyles = makeStyles((theme) => ({
     minHeight: '100vh',
   },
   podcastSection: {
+    backgroundColor: theme.palette.primary.main,
     color: theme.palette.primary.contrastText,
     padding: 10,
-    display: 'flex',
+    alignItems: 'center',
+    [theme.breakpoints.up('sm')]: {
+      display: 'flex',
+    },
   },
   podcastImageSection: {
     textAlign: 'center',
   },
+  podcastSectionTitle: {
+    fontSize: 30,
+    margin: 10,
+    [theme.breakpoints.up('sm')]: {
+      fontSize: 90,
+      margin: 0,
+    },
+  },
   gridContainer: {
     padding: 20,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 }));
 
@@ -40,11 +55,11 @@ const PodcastInfo = () => {
       <Grid>
         {selectedPodcast ? (
           <div className={classes.podcastSection}>
-            <Grid item xs={4} className={classes.podcastImageSection}>
-              <img src={selectedPodcast.image} />
+            <Grid item sm={4} xs={12} className={classes.podcastImageSection}>
+              <img src={selectedPodcast.image} width="80%" />
             </Grid>
-            <Grid item xs={8}>
-              <Typography variant="h2">
+            <Grid item sm={8} xs={12}>
+              <Typography variant="h2" className={classes.podcastSectionTitle}>
                 {selectedPodcast.title
                   ? selectedPodcast.title
                   : selectedPodcast.title_original}

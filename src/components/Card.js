@@ -13,28 +13,37 @@ import PodcastContext from '../contexts/PodcastContext';
 
 const useStyles = makeStyles((theme) => ({
   card: {
+    backgroundColor: theme.palette.primary.dark,
     maxWidth: '30vw',
     maxHeight: '15vh',
     margin: 10,
-    boxShadow: `1px 1px 1px 1px rgba(0, 0, 0, 0.5)`,
     [theme.breakpoints.up('sm')]: {
       maxWidth: '15vw',
-      maxHeight: '12vh',
+      maxHeight: '80vh',
       margin: 5,
     },
   },
   cardContent: {
-    height: '4vh',
-    padding: 1,
-    maxWidth: '45vw',
-    textAlign: 'center',
+    display: 'flex',
+    backgroundColor: theme.palette.primary.dark,
+    color: theme.palette.primary.light,
+    whiteSpace: 'nowrap',
+    overflow: 'hidden',
+    maxWidth: '90%',
+    fontSize: 12,
     [theme.breakpoints.up('sm')]: {
-      height: '2vh',
-      padding: 1,
-      maxWidth: '20vw',
+      overflow: 'hidden',
+      maxHeight: '2vh',
+      padding: '3px 5px',
+      fontSize: 20,
+      maxWidth: '70%',
     },
   },
 }));
+
+const trimText = (text, num) => {
+  return text.length > num ? text.slice(0, num) + '...' : text;
+};
 
 const Card = ({ podcast, episode, search }) => {
   const classes = useStyles();
@@ -56,18 +65,23 @@ const Card = ({ podcast, episode, search }) => {
       <CardActionArea>
         <CardMedia
           component="img"
-          height="80vh"
           image={podcast ? podcast.image : episode.thumbnail}
         />
         {podcast || search ? (
-          <CardContent className={classes.cardContent}>
-            <Typography variant="body2" color="textSecondary" component="p">
+          <CardContent
+            style={{
+              padding: 0,
+            }}
+          >
+            <div className={classes.cardContent}>
               {podcast
                 ? !search
-                  ? podcast.title
-                  : podcast.title_original
-                : episode.title_original}
-            </Typography>
+                  ? window.innerWidth < 630
+                    ? trimText(podcast.title, 9)
+                    : trimText(podcast.title, 15)
+                  : trimText(podcast.title_original, 10)
+                : trimText(episode.title_original, 10)}
+            </div>
           </CardContent>
         ) : null}
       </CardActionArea>
