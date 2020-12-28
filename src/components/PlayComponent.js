@@ -3,47 +3,49 @@ import { makeStyles } from '@material-ui/core/styles';
 import { Grid, IconButton } from '@material-ui/core';
 import { ExpandLess, ExpandMore } from '@material-ui/icons';
 import AudioPlayer from 'react-modular-audio-player';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 import PodcastContext from '../contexts/PodcastContext';
 
 const useStyles = makeStyles((theme) => ({
   container: {
     backgroundColor: theme.palette.primary.main,
-    position: 'fixed',
-    bottom: 0,
-    width: '-webkit-fill-available',
+    width: '100%',
   },
   playerContainer: {
     display: 'flex',
     alignItems: 'center',
+    justifyContent: 'flex-start',
   },
   player: {
-    position: 'fixed',
-    bottom: 10,
+    position: 'absolute',
+    top: 0,
+    bottom: 0,
+    right: 0,
+    left: '200px',
+    display: 'flex',
     zIndex: 1,
-    width: '80%',
-    textAlign: '-webkit-center',
-    margin: '0 0 1vh 22vh',
+    width: '100%',
+    alignItems: 'center',
   },
   expandedContainer: {
     backgroundColor: theme.palette.primary.main,
-    position: 'fixed',
     bottom: 0,
-    width: '-webkit-fill-available',
+    width: '100%',
     minHeight: '100vh',
+    transition: 'height 1s',
   },
   expandedContent: {
     bottom: 50,
+    width: '100%',
     position: 'absolute',
   },
   expandedPlayerContainer: {
-    position: 'fixed',
-    bottom: 10,
+    position: 'absolute',
+    bottom: 50,
     zIndex: 1,
-    width: '-webkit-fill-available',
+    width: '100%',
     textAlign: '-webkit-center',
-    margin: '0 0 3vh 0',
   },
   expandedPlayerDescription: {
     fontFamily: 'Arial',
@@ -76,11 +78,72 @@ const StyledDescription = styled(Grid)`
   }
 `;
 
+const StyledContainer = styled.div`
+  position: sticky;
+  bottom: 0;
+  overflow: hidden;
+  height: 8vh;
+  ${(props) =>
+    props.isExpanding &&
+    css`
+      height: 100vh;
+    `}
+  transition: height 0.5s;
+`;
+
+let rearrangedPlayer = [
+  {
+    className: 'top',
+    style: {
+      display: 'flex',
+      justifyContent: 'flex-start',
+    },
+    innerComponents: [
+      {
+        type: 'play',
+        style: { flex: '1' },
+      },
+      {
+        type: 'volume',
+        style: { flex: '1 0 70px', minWidth: '100px' },
+      },
+      {
+        type: 'name',
+        style: { flex: '5 0 50%', minWidth: '100px' },
+      },
+    ],
+  },
+];
+
+let expandedRearrangedPlayer = [
+  {
+    className: 'top',
+    style: {
+      position: 'absolute',
+      display: 'flex',
+      justifyContent: 'flex-start',
+      left: '45%',
+      bottom: '10%',
+    },
+    innerComponents: [
+      {
+        type: 'play',
+        style: { flex: '1', maxWidth: '100px' },
+      },
+      {
+        type: 'volume',
+        style: { flex: '1 0 70px', maxWidth: '100px' },
+      },
+    ],
+  },
+];
+
 const PlayComponent = () => {
   const classes = useStyles();
   const { selectedEpisode } = useContext(PodcastContext);
 
   const [isExpanded, setIsExpanded] = useState(false);
+  const [isExpanding, setIsExpanding] = useState(false);
 
   let playlist = [
     {
@@ -92,35 +155,38 @@ const PlayComponent = () => {
     },
   ];
 
+  const handleExpansion = () => {
+    if (!isExpanded) {
+      setIsExpanding(true);
+      setIsExpanded(true);
+    } else {
+      setIsExpanding(false);
+      setTimeout(() => {
+        setIsExpanded(false);
+      }, 500);
+    }
+  };
+
   return (
-    <React.Fragment>
+    <StyledContainer isExpanding={isExpanding}>
       {!isExpanded ? (
         <div className={classes.container}>
           <Grid className={classes.playerContainer}>
-            <Grid
-              item
-              xs={4}
-              style={{
-                display: 'flex',
-                padding: 0,
-              }}
-            >
-              <IconButton>
-                <ExpandLess
-                  style={{
-                    fontSize: 50,
-                    color: 'black',
-                  }}
-                  onClick={() => setIsExpanded(!isExpanded)}
-                />
-              </IconButton>
-
-              <img
-                src={selectedEpisode.thumbnail}
-                height="60vh"
-                style={{ paddingTop: 10 }}
+            <IconButton>
+              <ExpandLess
+                style={{
+                  fontSize: 50,
+                  color: 'black',
+                }}
+                onClick={handleExpansion}
               />
-            </Grid>
+            </IconButton>
+
+            <img
+              src={selectedEpisode.thumbnail}
+              height='60vh'
+              style={{ padding: '10px 10px' }}
+            />
           </Grid>
         </div>
       ) : (
@@ -140,7 +206,7 @@ const PlayComponent = () => {
                     fontSize: 50,
                     color: 'black',
                   }}
-                  onClick={() => setIsExpanded(!isExpanded)}
+                  onClick={handleExpansion}
                 />
               </IconButton>
             </Grid>
@@ -189,6 +255,11 @@ const PlayComponent = () => {
               </Grid>
             </div>
           </Grid>
+          <div
+            className={
+              !isExpanded ? classes.player : classes.expandedPlayerContainer
+            }
+          ></div>
         </div>
       )}
       <div
@@ -198,13 +269,14 @@ const PlayComponent = () => {
       >
         <AudioPlayer
           audioFiles={playlist}
-          fontFamily="serif"
-          fontSize="1.5vw"
-          playerWidth="50vw"
-          iconSize="1.85vw"
+          rearrange={isExpanded ? expandedRearrangedPlayer : rearrangedPlayer}
+          fontFamily='serif'
+          fontSize='2vw'
+          iconSize='3vw'
+          playerWidth='50vw'
         />
       </div>
-    </React.Fragment>
+    </StyledContainer>
   );
 };
 
