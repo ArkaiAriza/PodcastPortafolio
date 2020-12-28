@@ -11,7 +11,6 @@ const useStyles = makeStyles((theme) => ({
     position: 'relative',
     width: '80%',
     maxHeight: '4vh',
-    margin: 10,
     backgroundColor: fade(theme.palette.primary.light, 0.15),
     '&:hover': {
       backgroundColor: fade(theme.palette.primary.light, 0.3),

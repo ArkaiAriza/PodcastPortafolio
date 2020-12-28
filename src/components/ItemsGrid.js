@@ -14,15 +14,13 @@ const useStyles = makeStyles((theme) => ({
   gridEpisode: {
     display: 'flex',
     flexDirection: 'column',
-    flexWrap: 'wrap',
     justifyContent: 'center',
   },
   episodeCard: {
     display: 'flex',
-    textAlign: 'center',
     justifyContent: 'space-between',
     margin: '1vh 20vw',
-    fontFamily: 'Arial',
+    alignItems: 'center',
     '&:hover': {
       backgroundColor: theme.palette.primary.main,
     },
