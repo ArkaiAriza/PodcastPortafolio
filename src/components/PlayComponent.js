@@ -176,13 +176,12 @@ const PlayComponent = () => {
       {!isExpanded ? (
         <div className={classes.container}>
           <Grid className={classes.playerContainer}>
-            <IconButton>
+            <IconButton onClick={handleExpansion}>
               <ExpandLess
                 style={{
                   fontSize: 50,
                   color: 'white',
                 }}
-                onClick={handleExpansion}
               />
             </IconButton>
 
@@ -200,13 +199,12 @@ const PlayComponent = () => {
                 padding: 0,
               }}
             >
-              <IconButton>
+              <IconButton onClick={handleExpansion}>
                 <ExpandMore
                   style={{
                     fontSize: 50,
                     color: 'white',
                   }}
-                  onClick={handleExpansion}
                 />
               </IconButton>
             </Grid>
@@ -270,10 +268,10 @@ const PlayComponent = () => {
         <AudioPlayer
           audioFiles={playlist}
           rearrange={isExpanded ? expandedRearrangedPlayer : rearrangedPlayer}
-          fontFamily='serif'
-          fontSize='2rem'
-          iconSize='2rem'
-          playerWidth='70vw'
+          fontFamily="serif"
+          fontSize="2rem"
+          iconSize="2rem"
+          playerWidth="70vw"
         />
       </div>
     </StyledContainer>

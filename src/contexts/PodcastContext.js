@@ -20,7 +20,7 @@ export const PodcastProvider = ({ children }) => {
   const [episodeList, setEpisodeList] = useState([]);
   const [genres, setGenres] = useState([]);
   const [selectedGenre, setSelectedGenre] = useState({});
-  const [page, setPage] = useState(1);
+  const [page, setPage] = useState(0);
   const [selectedPodcast, setSelectedPodcast] = useState({});
   const [selectedEpisode, setSelectedEpisode] = useState({});
   const [results, setResults] = useState({
@@ -30,11 +30,16 @@ export const PodcastProvider = ({ children }) => {
 
   const getBestPodcasts = async () => {
     const response = await axios.get(`/best_podcasts?page=${page}&region=us`);
-    setPodcastList(response.data.podcasts);
+    setPodcastList(podcastList.concat(response.data.podcasts));
   };
 
   const getBestPodcastsByGenre = async () => {
-    if (genres) {
+    if (
+      genres &&
+      podcastList.length === 0 &&
+      selectedGenre.name !== undefined
+    ) {
+      console.log('verified');
       const response = await axios.get(
         `/best_podcasts?genre_id=${selectedGenre.id}&page=${page}&region=us`
       );
@@ -89,6 +94,7 @@ export const PodcastProvider = ({ children }) => {
         getBestPodcasts,
         getEpisodesByPodcastId,
         searchInfo,
+        setPodcastList,
       }}
     >
       {children}

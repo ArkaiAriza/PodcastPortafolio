@@ -21,8 +21,13 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: 'space-between',
     margin: '1vh 20vw',
     alignItems: 'center',
+    display: 'flex',
+    flexWrap: 'wrap',
     '&:hover': {
       backgroundColor: theme.palette.primary.main,
+    },
+    [theme.breakpoints.up('sm')]: {
+      flexWrap: 'nowrap',
     },
   },
   episodeCardSearch: {
@@ -33,7 +38,7 @@ const useStyles = makeStyles((theme) => ({
   },
   searchTitle: {
     margin: '1vh 5vw',
-    fontFamily: 'Arial',
+    fontFamily: 'Roboto',
     fontSize: 30,
     color: theme.palette.primary.contrastText,
   },

@@ -1,7 +1,14 @@
 import React, { useContext, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import { Grid, Typography, CircularProgress } from '@material-ui/core';
+import {
+  Grid,
+  Typography,
+  CircularProgress,
+  IconButton,
+} from '@material-ui/core';
+import { ArrowBackIos } from '@material-ui/icons';
 
+import history from '../history';
 import PodcastContext from '../contexts/PodcastContext';
 import ItemsGrid from './ItemsGrid';
 
@@ -45,7 +52,6 @@ const PodcastInfo = () => {
   const { selectedPodcast, episodeList, getEpisodesByPodcastId } = useContext(
     PodcastContext
   );
-
   useEffect(() => {
     getEpisodesByPodcastId(selectedPodcast.id);
   }, []);
@@ -55,6 +61,15 @@ const PodcastInfo = () => {
       <Grid>
         {selectedPodcast ? (
           <div className={classes.podcastSection}>
+            <IconButton>
+              <ArrowBackIos
+                style={{
+                  fontSize: 50,
+                  color: 'white',
+                }}
+                onClick={() => history.goBack()}
+              />
+            </IconButton>
             <Grid item sm={4} xs={12} className={classes.podcastImageSection}>
               <img src={selectedPodcast.image} width="80%" />
             </Grid>
@@ -76,7 +91,7 @@ const PodcastInfo = () => {
             </Grid>
           </div>
         ) : (
-          <CircularProgress color="light" size="8vw" />
+          <CircularProgress color="primary" size="8vw" />
         )}
         {episodeList ? (
           <Grid item xs={12} className={classes.gridContainer}>
@@ -86,7 +101,7 @@ const PodcastInfo = () => {
             />
           </Grid>
         ) : (
-          <CircularProgress color="light" size="8vw" />
+          <CircularProgress color="primary" size="8vw" />
         )}
       </Grid>
     </div>

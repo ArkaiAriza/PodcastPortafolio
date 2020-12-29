@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState, useRef } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { Chip, Grid, CircularProgress, Divider } from '@material-ui/core';
 
@@ -6,7 +6,7 @@ import PodcastContext from '../contexts/PodcastContext';
 import SearchBar from './SearchBar';
 import ItemsGrid from './ItemsGrid';
 
-const genres = [
+/* const genres = [
   { id: 144, name: 'Personal Finance', parent_id: 67 },
   { id: 151, name: 'Locally Focused', parent_id: 67 },
   { id: 127, name: 'Technology', parent_id: 67 },
@@ -1028,7 +1028,7 @@ const podcastList = [
     },
     genre_ids: [215, 99, 67, 216],
   },
-];
+]; */
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -1063,7 +1063,7 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: '#202020',
     color: theme.palette.primary.contrastText,
     borderRadius: 0,
-    fontFamily: 'Arial',
+    fontFamily: 'Roboto',
     fontSize: 15,
     width: '75%',
     '&:hover': {
@@ -1085,7 +1085,7 @@ const useStyles = makeStyles((theme) => ({
     margin: '3rem 2rem',
     textAlign: 'start',
     fontSize: 30,
-    fontFamily: 'Arial',
+    fontFamily: 'Roboto',
     [theme.breakpoints.up('sm')]: {
       fontSize: 60,
     },
@@ -1095,30 +1095,60 @@ const useStyles = makeStyles((theme) => ({
 const LandingPage = () => {
   const classes = useStyles();
   const {
-    /* genres,
+    genres,
+    page,
     podcastList,
-    getBestPodcasts, */
+    setPodcastList,
+    getBestPodcasts,
     getGenres,
     setSelectedGenre,
+    setPage,
     selectedGenre,
     getBestPodcastsByGenre,
   } = useContext(PodcastContext);
 
-  /* useEffect(() => {
+  const loader = useRef(null);
+  console.log(page);
+  useEffect(() => {
     getGenres();
-    getBestPodcasts();
   }, []);
 
   useEffect(() => {
+    getBestPodcasts();
+  }, [page]);
+
+  useEffect(() => {
     getBestPodcastsByGenre();
-  }, [selectedGenre]); */
+  }, [selectedGenre]);
+
+  useEffect(() => {
+    var options = {
+      root: null,
+      rootMargin: '20px',
+      threshold: 1.0,
+    };
+    const observer = new IntersectionObserver(handleObserver, options);
+    if (loader.current) {
+      observer.observe(loader.current);
+    }
+  }, []);
 
   const handleGenreOption = (selectedGenre) => {
+    setPodcastList([]);
+    setPage(1);
     setSelectedGenre(selectedGenre);
-    getBestPodcastsByGenre();
+  };
+
+  const handleObserver = (entities) => {
+    const target = entities[0];
+    console.log(target);
+    if (target.isIntersecting) {
+      setPage((page) => page + 1);
+    }
   };
 
   const renderGenres = () => {
+    console.log(selectedGenre);
     return genres.map((genre) => {
       return (
         <Chip
@@ -1142,7 +1172,7 @@ const LandingPage = () => {
           {genres ? (
             renderGenres()
           ) : (
-            <CircularProgress color="light" size="8vw" />
+            <CircularProgress color="primary" size="8vw" />
           )}
         </Grid>
         {/* <Divider style={{ margin: '2vh 7vw' }} /> */}
@@ -1154,16 +1184,19 @@ const LandingPage = () => {
               <div>{selectedGenre.name}</div>
             )}
           </div>
-          {podcastList ? (
+          {podcastList.length > 0 ? (
             <ItemsGrid
               infoList={{ podcastList, episodesList: [] }}
               search={false}
             />
           ) : (
-            <CircularProgress color="light" size="8vw" />
+            <CircularProgress color="primary" size="8vw" />
           )}
         </Grid>
       </Grid>
+      <div className="loading" ref={loader}>
+        <h2>Load More</h2>
+      </div>
     </div>
   );
 };

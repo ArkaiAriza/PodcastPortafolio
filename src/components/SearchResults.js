@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { Grid, Typography, CircularProgress } from '@material-ui/core';
 
@@ -52,9 +52,15 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const SearchResults = () => {
+const SearchResults = (props) => {
   const classes = useStyles();
-  const { results, setSelectedPodcast } = useContext(PodcastContext);
+  const { results, setSelectedPodcast, searchInfo } = useContext(
+    PodcastContext
+  );
+
+  useEffect(() => {
+    searchInfo(props.match.params.search);
+  }, []);
 
   return (
     <div className={classes.container}>

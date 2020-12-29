@@ -42,7 +42,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const trimText = (text, num) => {
-  return text.length > num ? text.slice(0, num) + '...' : text;
+  return text ? (text.length > num ? text.slice(0, num) + '...' : text) : null;
 };
 
 const Card = ({ podcast, episode, search }) => {
@@ -55,6 +55,7 @@ const Card = ({ podcast, episode, search }) => {
       onClick={() => {
         if (podcast) {
           setSelectedPodcast(podcast);
+          window.scrollTo(0, 0);
           history.push(`/podcast/${podcast.id}`);
         }
         if (episode) {
