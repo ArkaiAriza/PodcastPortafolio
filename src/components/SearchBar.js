@@ -11,11 +11,13 @@ const useStyles = makeStyles((theme) => ({
     position: 'relative',
     width: '80%',
     maxHeight: '4vh',
+    minWidth: '80vw',
     backgroundColor: fade(theme.palette.primary.light, 0.15),
     '&:hover': {
       backgroundColor: fade(theme.palette.primary.light, 0.3),
     },
     [theme.breakpoints.up('sm')]: {
+      minWidth: '30vw',
       width: '25%',
     },
   },
