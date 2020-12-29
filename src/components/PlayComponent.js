@@ -61,6 +61,11 @@ const useStyles = makeStyles((theme) => ({
     margin: '1vh 18vw',
     color: theme.palette.primary.light,
   },
+  placeholder: {
+    fontFamily: 'Roboto',
+    fontSize: '3vh',
+    color: theme.palette.primary.light,
+  },
 }));
 
 const StyledDescription = styled(Grid)`
@@ -185,7 +190,15 @@ const PlayComponent = () => {
               />
             </IconButton>
 
-            <img src={selectedEpisode.thumbnail} style={{ height: '80%' }} />
+            <img
+              alt={
+                selectedEpisode.title
+                  ? selectedEpisode.title
+                  : selectedEpisode.title_original
+              }
+              src={selectedEpisode.thumbnail}
+              style={{ height: '80%' }}
+            />
           </Grid>
         </div>
       ) : (
@@ -218,6 +231,11 @@ const PlayComponent = () => {
                 }}
               >
                 <img
+                  alt={
+                    selectedEpisode.title
+                      ? selectedEpisode.title
+                      : selectedEpisode.title_original
+                  }
                   src={selectedEpisode.thumbnail}
                   style={{ margin: 'auto' }}
                 />
@@ -265,14 +283,18 @@ const PlayComponent = () => {
           !isExpanded ? classes.player : classes.expandedPlayerContainer
         }
       >
-        <AudioPlayer
-          audioFiles={playlist}
-          rearrange={isExpanded ? expandedRearrangedPlayer : rearrangedPlayer}
-          fontFamily="serif"
-          fontSize="2rem"
-          iconSize="2rem"
-          playerWidth="70vw"
-        />
+        {selectedEpisode.audio ? (
+          <AudioPlayer
+            audioFiles={playlist}
+            rearrange={isExpanded ? expandedRearrangedPlayer : rearrangedPlayer}
+            fontFamily="serif"
+            fontSize="2rem"
+            iconSize="2rem"
+            playerWidth="70vw"
+          />
+        ) : (
+          <div className={classes.placeholder}>Select an Episode!</div>
+        )}
       </div>
     </StyledContainer>
   );

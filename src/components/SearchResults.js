@@ -1,6 +1,12 @@
 import React, { useContext, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import { Grid, Typography, CircularProgress } from '@material-ui/core';
+import {
+  Grid,
+  Typography,
+  CircularProgress,
+  IconButton,
+} from '@material-ui/core';
+import { ArrowBackIos } from '@material-ui/icons';
 
 import history from '../history';
 import PodcastContext from '../contexts/PodcastContext';
@@ -32,6 +38,10 @@ const useStyles = makeStyles((theme) => ({
   },
   topOptionImg: {
     maxWidth: '80%',
+    '&:hover': {
+      cursor: 'pointer',
+      filter: 'brightness(125%)',
+    },
     [theme.breakpoints.up('sm')]: {
       maxWidth: '16vw',
     },
@@ -54,16 +64,29 @@ const useStyles = makeStyles((theme) => ({
 
 const SearchResults = (props) => {
   const classes = useStyles();
-  const { results, setSelectedPodcast, searchInfo } = useContext(
-    PodcastContext
-  );
+  const {
+    results,
+    setSelectedPodcast,
+    searchInfo,
+    setPodcastList,
+    setPage,
+  } = useContext(PodcastContext);
 
   useEffect(() => {
     searchInfo(props.match.params.search);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
     <div className={classes.container}>
+      <IconButton onClick={() => history.goBack()}>
+        <ArrowBackIos
+          style={{
+            fontSize: 40,
+            color: 'white',
+          }}
+        />
+      </IconButton>
       {results.podcastList.slice(0, 1)[0] !== undefined ? (
         <Grid>
           <Grid item xs={12} className={classes.searchbarContainer}>
@@ -72,9 +95,12 @@ const SearchResults = (props) => {
           <div className={classes.topOptionContainer}>
             <Grid item xs={12} sm={3} className={classes.topOptionImgContainer}>
               <img
+                alt={results.podcastList.slice(0, 1)[0].title_original}
                 src={results.podcastList.slice(0, 1)[0].image}
                 className={classes.topOptionImg}
                 onClick={() => {
+                  setPodcastList([]);
+                  setPage(0);
                   setSelectedPodcast(results.podcastList.slice(0, 1)[0]);
                   history.push(
                     `/podcast/${results.podcastList.slice(0, 1)[0].id}`

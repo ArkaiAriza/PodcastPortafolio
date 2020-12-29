@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import axios from '../apis/listennotes';
 
 const PodcastContext = React.createContext({
@@ -34,16 +34,11 @@ export const PodcastProvider = ({ children }) => {
   };
 
   const getBestPodcastsByGenre = async () => {
-    if (
-      genres &&
-      podcastList.length === 0 &&
-      selectedGenre.name !== undefined
-    ) {
-      console.log('verified');
+    if (selectedGenre.name) {
       const response = await axios.get(
         `/best_podcasts?genre_id=${selectedGenre.id}&page=${page}&region=us`
       );
-      setPodcastList(response.data.podcasts);
+      setPodcastList(podcastList.concat(response.data.podcasts));
     }
   };
 
@@ -68,9 +63,6 @@ export const PodcastProvider = ({ children }) => {
       episodesList: responseEpisodes.data.results,
     });
   };
-
-  /* useEffect(() => {
-  }, []); */
 
   return (
     <PodcastContext.Provider

@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { Typography } from '@material-ui/core';
 
@@ -21,7 +21,6 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: 'space-between',
     margin: '1vh 20vw',
     alignItems: 'center',
-    display: 'flex',
     flexWrap: 'wrap',
     '&:hover': {
       backgroundColor: theme.palette.primary.main,

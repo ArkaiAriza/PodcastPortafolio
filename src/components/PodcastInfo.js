@@ -54,6 +54,7 @@ const PodcastInfo = () => {
   );
   useEffect(() => {
     getEpisodesByPodcastId(selectedPodcast.id);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -61,17 +62,24 @@ const PodcastInfo = () => {
       <Grid>
         {selectedPodcast ? (
           <div className={classes.podcastSection}>
-            <IconButton>
+            <IconButton onClick={() => history.goBack()}>
               <ArrowBackIos
                 style={{
                   fontSize: 50,
                   color: 'white',
                 }}
-                onClick={() => history.goBack()}
               />
             </IconButton>
             <Grid item sm={4} xs={12} className={classes.podcastImageSection}>
-              <img src={selectedPodcast.image} width="80%" />
+              <img
+                alt={
+                  selectedPodcast.title
+                    ? selectedPodcast.title
+                    : selectedPodcast.title_original
+                }
+                src={selectedPodcast.image}
+                width="80%"
+              />
             </Grid>
             <Grid item sm={8} xs={12}>
               <Typography variant="h2" className={classes.podcastSectionTitle}>

@@ -1,6 +1,6 @@
-import React, { useContext, useEffect, useState, useRef } from 'react';
+import React, { useContext, useEffect, useRef } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import { Chip, Grid, CircularProgress, Divider } from '@material-ui/core';
+import { Chip, Grid, CircularProgress } from '@material-ui/core';
 
 import PodcastContext from '../contexts/PodcastContext';
 import SearchBar from './SearchBar';
@@ -1108,18 +1108,21 @@ const LandingPage = () => {
   } = useContext(PodcastContext);
 
   const loader = useRef(null);
-  console.log(page);
+
   useEffect(() => {
     getGenres();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
-    getBestPodcasts();
+    if (!selectedGenre.name) getBestPodcasts();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [page]);
 
   useEffect(() => {
-    getBestPodcastsByGenre();
-  }, [selectedGenre]);
+    if (selectedGenre.name) getBestPodcastsByGenre();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedGenre, page]);
 
   useEffect(() => {
     var options = {
@@ -1131,24 +1134,23 @@ const LandingPage = () => {
     if (loader.current) {
       observer.observe(loader.current);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleGenreOption = (selectedGenre) => {
     setPodcastList([]);
-    setPage(1);
+    setPage(0);
     setSelectedGenre(selectedGenre);
   };
 
   const handleObserver = (entities) => {
     const target = entities[0];
-    console.log(target);
     if (target.isIntersecting) {
       setPage((page) => page + 1);
     }
   };
 
   const renderGenres = () => {
-    console.log(selectedGenre);
     return genres.map((genre) => {
       return (
         <Chip
@@ -1189,13 +1191,25 @@ const LandingPage = () => {
               infoList={{ podcastList, episodesList: [] }}
               search={false}
             />
-          ) : (
-            <CircularProgress color="primary" size="8vw" />
-          )}
+          ) : null}
         </Grid>
       </Grid>
-      <div className="loading" ref={loader}>
-        <h2>Load More</h2>
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'center',
+        }}
+        className="loading"
+        ref={loader}
+      >
+        <CircularProgress
+          color="primary"
+          size="8vw"
+          style={{
+            color: '#c7c7c7',
+            margin: 50,
+          }}
+        />
       </div>
     </div>
   );

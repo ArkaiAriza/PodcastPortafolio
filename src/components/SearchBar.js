@@ -23,12 +23,14 @@ const useStyles = makeStyles((theme) => ({
 
 const SearchBar = () => {
   const classes = useStyles();
-  const { searchInfo } = useContext(PodcastContext);
+  const { searchInfo, setPodcastList, setPage } = useContext(PodcastContext);
 
   const [text, setText] = useState('');
 
   const handleSearch = (e) => {
     e.preventDefault();
+    setPodcastList([]);
+    setPage(0);
     searchInfo(text);
     history.push(`/results/${text}`);
   };

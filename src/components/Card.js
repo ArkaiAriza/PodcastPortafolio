@@ -5,7 +5,6 @@ import {
   CardContent,
   CardMedia,
   CardActionArea,
-  Typography,
 } from '@material-ui/core';
 
 import history from '../history';
@@ -47,13 +46,20 @@ const trimText = (text, num) => {
 
 const Card = ({ podcast, episode, search }) => {
   const classes = useStyles();
-  const { setSelectedPodcast, setSelectedEpisode } = useContext(PodcastContext);
+  const {
+    setSelectedPodcast,
+    setSelectedEpisode,
+    setPodcastList,
+    setPage,
+  } = useContext(PodcastContext);
 
   return (
     <MaterialCard
       className={classes.card}
       onClick={() => {
         if (podcast) {
+          setPodcastList([]);
+          setPage(0);
           setSelectedPodcast(podcast);
           window.scrollTo(0, 0);
           history.push(`/podcast/${podcast.id}`);
