@@ -1174,7 +1174,7 @@ const LandingPage = () => {
           <SearchBar />
           <img
             style={{ width: 250, height: '100%', margin: 10 }}
-            src="https://uc7bd077c46c09a90dda0d8e4e8b.previews.dropboxusercontent.com/p/thumb/ABDWvboV0YvFolbwoIjpaHBDdVOHpWPofs4m0tboXQmxBCKqTz3YLeCAhqJcsj7mERYOVcoj1PprNNbWFsKoOVIAmGBR6ixGhcAwftWlpmnaDxl3Q9tjONQHqQdgrGHu2dVF3oMNtffjouO6dviQSN2WfFzXJZewiDsHar05uMd3WzncK42fvDm8Jy0QTAcTvZLKwZh5dQGmHMlAz6ftEk2HNV33a0ErQY2_N_-A7EziaWbxx3mtBDRQINBVb7WbGNdNWS3ZUww3nX8kyUJYDyi3WaqIT6UePeR51auKMRAas1GkIWMfN4VWK6fkoq1_V2uNhSTuv8hBWI0bd0Fvt55-OdTDRK0MoyvlJnL9Wr0PJg/p.png?fv_content=true&size_mode=5"
+            src="https://i.imgur.com/qqaRqFF.png"
           />
         </Grid>
         {/* <Divider style={{ margin: '1vh 7vw' }} /> */}
