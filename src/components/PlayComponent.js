@@ -24,7 +24,7 @@ const useStyles = makeStyles((theme) => ({
     top: 0,
     bottom: 0,
     right: 0,
-    left: '150px',
+    left: '190px',
     display: 'flex',
     zIndex: 1,
     width: '100%',
@@ -167,7 +167,9 @@ const PlayComponent = () => {
   const handleExpansion = () => {
     if (!isExpanded) {
       setIsExpanding(true);
-      setIsExpanded(true);
+      setTimeout(() => {
+        setIsExpanded(true);
+      }, 500);
     } else {
       setIsExpanding(false);
       setTimeout(() => {
